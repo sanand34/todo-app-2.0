@@ -30,7 +30,7 @@ function Main() {
   return (
     <View style={styles.container}>
       <Appbar.Header style={styles.header}>
-        <Appbar.Content title="Todo App" subtitle={"Sanchit Anaand"} />
+        <Appbar.Content title="Todo App" subtitle={"Sanchit Anand"} />
       </Appbar.Header>
 
       <ScrollView style={styles.body}>
