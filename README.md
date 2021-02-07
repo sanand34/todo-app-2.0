@@ -1,6 +1,9 @@
-# Todo-app-in-react-native(sync todos using google)
+### Todo-app-in-react-native(sync todos using google)
 
 [![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/8ipuAYNNg20/0.jpg)](https://www.youtube.com/watch?v=8ipuAYNNg20)
+
+### Google SignIn using expo
+https://inaguirre.medium.com/react-native-login-with-google-quick-guide-fe351e464752
 
 ### Software prerequisites
 
