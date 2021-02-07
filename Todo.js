@@ -4,7 +4,7 @@ import { Checkbox, Button } from "react-native-paper";
 import firebase from "firebase";
 import { useStateValue } from "./StateProvider";
 import { db } from "./firebase";
-const Todo = ({ todo }) => {
+const Todo = ({ todo,id }) => {
   const [{ user }] = useStateValue();
   const [checked, setChecked] = useState(false);
 
@@ -29,7 +29,7 @@ const Todo = ({ todo }) => {
         onPress={() => {
           db.collection("rooms")
 
-            .doc(`${user ? user.user.email : "Sanchit"}`)
+            .doc(`${user ? user.user.email : id}`)
             .update({
               Array: firebase.firestore.FieldValue.arrayRemove(todo),
             });
@@ -69,3 +69,4 @@ const styles = StyleSheet.create({
     width: 240,
   },
 });
+
