@@ -3,29 +3,42 @@ import firebase from "firebase";
 import { View, StyleSheet, ScrollView } from "react-native";
 import Todo from "./Todo.js";
 import { useStateValue } from "./StateProvider";
-import { Appbar, TextInput, Button } from "react-native-paper";
+import { Appbar, TextInput } from "react-native-paper";
+import { v4 } from "uuid";
 import { db } from "./firebase";
 import Login from "./Login";
-
 function Main() {
   const [input, setInput] = useState();
   const [todos, setTodos] = useState([]);
+  const [id, setId] = useState(v4());
   const [{ user }] = useStateValue();
+ 
 
   useEffect(() => {
+    const doc=db.collection("rooms").doc(id).get()
+        if (!doc.exists) {
+          db.collection("rooms")
+            .doc(id)
+            .set({ Array: [`Welcome`] });
+          
+        } 
     db.collection("rooms")
-      .doc(`${user ? user.user.email : "Sanchit"}`)
+      .doc(`${user ? user.user.email : id}`)
       .onSnapshot((snapshot) => {
         setTodos(snapshot.data().Array);
       });
 
+    
+  }, [user]);
+
+  useEffect(()=>{
     db.collection("rooms")
 
-      .doc("Sanchit")
-      .update({
-        Array: ["Get Started with Todo", "By Sanchit"],
-      });
-  }, [user]);
+    .doc("Sanchit")
+    .update({
+      Array: ["Get Started with Todo", "By Sanchit"],
+    });
+  },[])
 
   return (
     <View style={styles.container}>
@@ -36,7 +49,7 @@ function Main() {
       <ScrollView style={styles.body}>
         <Login />
         {todos.map((todo) => (
-          <Todo key={todo} todo={todo} />
+          <Todo key={todo} todo={todo} id={id} />
         ))}
       </ScrollView>
       <View>
@@ -50,7 +63,7 @@ function Main() {
           onSubmitEditing={() => {
             db.collection("rooms")
 
-              .doc(`${user ? user.user.email : "Sanchit"}`)
+              .doc(`${user ? user.user.email : id}`)
               .update({
                 Array: firebase.firestore.FieldValue.arrayUnion(input),
               });
@@ -79,3 +92,4 @@ const styles = StyleSheet.create({
     padding: 40,
   },
 });
+
