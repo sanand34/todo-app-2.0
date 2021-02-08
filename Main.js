@@ -15,30 +15,32 @@ function Main() {
   const [id, setId] = useState(v4());
   const [{ user }] = useStateValue();
  
-
   useEffect(() => {
-    
-        if (user===null) {
-          db.collection("rooms")
-            .doc(id)
-            .set({ Array: [`Get started with Todos`,`By Sanchit`] });
-            db.collection("rooms")
-            .doc(id)
-            .onSnapshot((snapshot) => {
-              setTodos(snapshot.data().Array);
-            });
-          
-        } else{
-          db.collection("rooms")
+    const timer = setTimeout(() => {
+      
+      db.collection("rooms")
       .doc(`${user ? user.user.email : id}`)
       .onSnapshot((snapshot) => {
         setTodos(snapshot.data().Array);
       });
+     
+     
 
-        }
-    
-    
+    }, 1000);
+    return () => clearTimeout(timer);
   }, [user]);
+
+  useEffect(() => {
+    
+    db.collection("rooms")
+    .doc(id)
+    .set({ Array: [`Get started with Todos`,`By Sanchit`] });
+       
+
+      
+    
+    
+  }, []);
 
   
 
@@ -94,4 +96,6 @@ const styles = StyleSheet.create({
     padding: 40,
   },
 });
+
+
 
