@@ -1,3 +1,5 @@
+
+  
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import { View, StyleSheet, ScrollView } from "react-native";
@@ -15,30 +17,30 @@ function Main() {
  
 
   useEffect(() => {
-    const doc=db.collection("rooms").doc(id).get()
-        if (!doc.exists) {
+    
+        if (user===null) {
           db.collection("rooms")
             .doc(id)
-            .set({ Array: [`Welcome`] });
+            .set({ Array: [`Get started with Todos`,`By Sanchit`] });
+            db.collection("rooms")
+            .doc(id)
+            .onSnapshot((snapshot) => {
+              setTodos(snapshot.data().Array);
+            });
           
-        } 
-    db.collection("rooms")
+        } else{
+          db.collection("rooms")
       .doc(`${user ? user.user.email : id}`)
       .onSnapshot((snapshot) => {
         setTodos(snapshot.data().Array);
       });
 
+        }
+    
     
   }, [user]);
 
-  useEffect(()=>{
-    db.collection("rooms")
-
-    .doc("Sanchit")
-    .update({
-      Array: ["Get Started with Todo", "By Sanchit"],
-    });
-  },[])
+  
 
   return (
     <View style={styles.container}>
