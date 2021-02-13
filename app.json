@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Todo App in native 2",
-    "slug": "todo-app-in-native-2",
+    "name": "Todo App with google signin",
+    "slug": "todo2",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,12 +23,12 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "com.sanchit34.todoappinnative"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": ""
+    "description": "Both android and ios support. Backend supported by cloud firestore and authentication using Google API.",
+    "githubUrl": "https://github.com/sanand34/Todo-App-2.0-React-native-with-sync-feature-using-google"
   }
 }
