@@ -2,38 +2,98 @@
   
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView,Alert } from "react-native";
 import Todo from "./Todo.js";
 import { useStateValue } from "./StateProvider";
+import { actionTypes } from "./reducer";
 import { Appbar, TextInput } from "react-native-paper";
 import { v4 } from "uuid";
 import { db } from "./firebase";
 import Login from "./Login";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 function Main() {
   const [input, setInput] = useState();
   const [todos, setTodos] = useState([]);
   const [id, setId] = useState(v4());
-  const [{ user }] = useStateValue();
+  const [{ user,del },dispatch] = useStateValue();
 
-  useEffect(() => {
+  useEffect(()=>{
     
+const getData = async () => {
+  try {
+    const storeData = async (value) => {
+      try {
+        let val = await AsyncStorage.getItem('@!^storage');
+        if (val == null){
+          await AsyncStorage.setItem('@!^storage', value)
+          db.collection("rooms")
+          
+    .doc(value)
+    .set({ Array: [] })
+    dispatch({
+      type: actionTypes.SET_DEL,
+      del: value,
+    });
+        }
+        else {
+          dispatch({
+            type: actionTypes.SET_DEL,
+            del: val,
+          });
+       }
+        
+      } catch (e) {
+        console.log(e)
+      }
+    }
+     storeData(id);
+    const value = await AsyncStorage.getItem('@!^storage')
+    if(value !== null) {
+      // Works on both Android and iOS
+Alert.alert(
+  'Message',
+  value,
+  [
+    {
+      text: 'Ask me later',
+      onPress: () => console.log('Ask me later pressed')
+    },
+    {
+      text: 'Cancel',
+      onPress: () => console.log('Cancel Pressed'),
+      style: 'cancel'
+    },
+    { text: 'OK', onPress: () => console.log('OK Pressed') }
+  ],
+  { cancelable: false }
+);
+    }
+  } catch(e) {
+    console.log(e)
+  }
+}
+getData();
+
+
+  },[])
+  useEffect(()=>{
     db.collection("rooms")
-    .doc(id)
+    .doc('Sanchit')
     .set({ Array: [] })
    
   
-    setTimeout(()=>{
+   const timer= setTimeout(()=>{
       db.collection("rooms")
-      .doc(id)
+      .doc(`${del ? del : 'Sanchit'}`)
       .onSnapshot((snapshot) => {
         setTodos(snapshot.data().Array);
         });
-     }, 2000)
+     }, 3500)
 
       
-    
-    
-  }, []);
+   return ()=>clearTimeout(timer) ;
+  },[del])
+ 
   useEffect(() => {
     db.collection('rooms').doc(id).get()
   .then((docSnapshot) => {
@@ -75,7 +135,7 @@ function Main() {
           onSubmitEditing={() => {
             db.collection("rooms")
 
-              .doc(`${user ? user.user.email : id}`)
+              .doc(`${user ? user.user.email : del}`)
               .update({
                 Array: firebase.firestore.FieldValue.arrayUnion(input),
               });
@@ -104,7 +164,6 @@ const styles = StyleSheet.create({
     padding: 40,
   },
 });
-
 
 
 
