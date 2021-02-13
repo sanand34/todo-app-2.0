@@ -1,5 +1,3 @@
-
-  
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import { View, StyleSheet, ScrollView,Alert } from "react-native";
@@ -23,9 +21,9 @@ const getData = async () => {
   try {
     const storeData = async (value) => {
       try {
-        let val = await AsyncStorage.getItem('@!^storage');
+        let val = await AsyncStorage.getItem('@^storage');
         if (val == null){
-          await AsyncStorage.setItem('@!^storage', value)
+          await AsyncStorage.setItem('@^storage', value)
           db.collection("rooms")
           
     .doc(value)
@@ -47,7 +45,7 @@ const getData = async () => {
       }
     }
      storeData(id);
-    const value = await AsyncStorage.getItem('@!^storage')
+    const value = await AsyncStorage.getItem('@^storage')
     if(value !== null) {
       // Works on both Android and iOS
 Alert.alert(
@@ -95,11 +93,11 @@ getData();
   },[del])
  
   useEffect(() => {
-    db.collection('rooms').doc(id).get()
+    db.collection('rooms').doc(`${del ? del : 'hola'}`).get()
   .then((docSnapshot) => {
     if (docSnapshot.exists) {
       db.collection("rooms")
-      .doc(`${user ? user.user.email : id}`)
+      .doc(`${user ? user.user.email : del}`)
       .onSnapshot((snapshot) => {
         setTodos(snapshot.data().Array);
         });
@@ -121,7 +119,7 @@ getData();
       <ScrollView style={styles.body}>
         <Login />
         {todos.map((todo) => (
-          <Todo key={todo} todo={todo} id={id} />
+          <Todo key={todo} todo={todo} id={`${del ? del : 'Sanchit'}`} />
         ))}
       </ScrollView>
       <View>
@@ -164,7 +162,3 @@ const styles = StyleSheet.create({
     padding: 40,
   },
 });
-
-
-
-
