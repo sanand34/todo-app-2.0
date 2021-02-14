@@ -69,6 +69,7 @@ function Main() {
     };
     getData();
   }, []);
+
   useEffect(() => {
     db.collection("rooms").doc("Sanchit").set({ Array: [] });
 
