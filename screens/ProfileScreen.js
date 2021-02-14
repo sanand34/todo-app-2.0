@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Button } from "react-native";
-import { useStateValue } from "../StateProvider";
-import { actionTypes } from "../reducer";
+import { useStateValue } from "../appState/StateProvider";
+import { actionTypes } from "../appState/reducer";
 import { Avatar, Headline } from "react-native-paper";
 
 function ProfileScreen({ navigation }) {

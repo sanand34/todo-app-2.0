@@ -1,20 +1,20 @@
 export const initialState = {
-  del: null,
+  devID: null,
   user: null,
 };
 
 export const actionTypes = {
-  SET_DEL: "SET_DEL",
+  SET_devID: "SET_devID",
   SET_USER: "SET_USER",
 };
 
 const reducer = (state, action) => {
   console.log(action);
   switch (action.type) {
-    case actionTypes.SET_DEL:
+    case actionTypes.SET_devID:
       return {
         ...state,
-        del: action.del,
+        devID: action.devID,
       };
 
     case actionTypes.SET_USER:

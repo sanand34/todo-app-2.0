@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Main from "./Main";
-import reducer, { initialState } from "./reducer.js";
-import { StateProvider } from "./StateProvider";
+import reducer, { initialState } from "./appState/reducer.js";
+import { StateProvider } from "./appState/StateProvider";
 import { LogBox } from "react-native";
 
 const App = () => {

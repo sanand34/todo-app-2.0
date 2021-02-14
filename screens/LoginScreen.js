@@ -1,14 +1,12 @@
-import React, { Component } from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import React from "react";
+import { View, Button } from "react-native";
 import * as Google from "expo-google-app-auth";
 import { db } from "../firebase";
-import { useStateValue } from "../StateProvider";
-import { actionTypes } from "../reducer";
+import { useStateValue } from "../appState/StateProvider";
+import { actionTypes } from "../appState/reducer";
 
-const IOS_CLIENT_ID ='Get from google api'
-  
-const ANDROID_CLIENT_ID ='Get from google api'
- 
+const IOS_CLIENT_ID = "Check readme for google api";
+const ANDROID_CLIENT_ID = "Check readme for google api";
 
 function LoginScreen({ navigation }) {
   const [{}, dispatch] = useStateValue();

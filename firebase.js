@@ -1,13 +1,7 @@
 import firebase from "firebase";
 if (!firebase.apps.length) {
   firebase.initializeApp({
-    //Get from firebase
-    apiKey: 
-    authDomain: 
-    projectId:
-    storageBucket: 
-    messagingSenderId: 
-    appId: 
+    //get from firebase,
   });
 } else {
   firebase.app(); // if already initialized, use that one

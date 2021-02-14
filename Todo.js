@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { Checkbox, Button } from "react-native-paper";
 import firebase from "firebase";
-import { useStateValue } from "./StateProvider";
+import { useStateValue } from "./appState/StateProvider";
 import { db } from "./firebase";
 const Todo = ({ todo, id }) => {
+  //redux type implementation using createContext
   const [{ user }] = useStateValue();
   const [checked, setChecked] = useState(false);
 
@@ -27,6 +28,7 @@ const Todo = ({ todo, id }) => {
         icon="delete"
         color="crimson"
         onPress={() => {
+          //deleting todo
           db.collection("rooms")
 
             .doc(`${user ? user.user.email : id}`)

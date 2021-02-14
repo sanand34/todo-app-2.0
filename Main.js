@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import firebase from "firebase";
 import { View, StyleSheet, ScrollView, Alert } from "react-native";
 import Todo from "./Todo.js";
-import { useStateValue } from "./StateProvider";
-import { actionTypes } from "./reducer";
+import { useStateValue } from "./appState/StateProvider";
+import { actionTypes } from "./appState/reducer";
 import { Appbar, TextInput } from "react-native-paper";
 import { v4 } from "uuid";
 import { db } from "./firebase";
@@ -12,15 +12,31 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 function Main() {
   const [input, setInput] = useState();
   const [todos, setTodos] = useState([]);
+
+  //creating id
   const [id, setId] = useState(v4());
-  const [{ user, del }, dispatch] = useStateValue();
+
+  //redux type implementation using createContext
+  const [{ user, devID }, dispatch] = useStateValue();
 
   useEffect(() => {
+    //getData function for implementing asynchronous storage in app
     const getData = async () => {
       try {
         const storeData = async (value) => {
           try {
+            //get data from storage about the device which is the firebase ID
             let val = await AsyncStorage.getItem("@^storage");
+
+            /*If there is no data in storage about the device 
+            then
+
+            set field ID in the storage
+            store ID in devID variable
+
+            else
+
+            get ID and store it in devID variable */
             if (val == null) {
               await AsyncStorage.setItem("@^storage", value);
               db.collection("rooms")
@@ -28,20 +44,23 @@ function Main() {
                 .doc(value)
                 .set({ Array: [] });
               dispatch({
-                type: actionTypes.SET_DEL,
-                del: value,
+                type: actionTypes.SET_devID,
+                devID: value,
               });
             } else {
               dispatch({
-                type: actionTypes.SET_DEL,
-                del: val,
+                type: actionTypes.SET_devID,
+                devID: val,
               });
             }
           } catch (e) {
             console.log(e);
           }
         };
+
         storeData(id);
+
+        /*if data in storage pop up an alert showing the same */
         const value = await AsyncStorage.getItem("@^storage");
         if (value !== null) {
           // Works on both Android and iOS
@@ -67,31 +86,35 @@ function Main() {
         console.log(e);
       }
     };
+
     getData();
   }, []);
 
   useEffect(() => {
+    //set an inital field named Sanchit
     db.collection("rooms").doc("Sanchit").set({ Array: [] });
 
+    //once the devID variable gets the ID get the data from the ID
     const timer = setTimeout(() => {
       db.collection("rooms")
-        .doc(`${del ? del : "Sanchit"}`)
+        .doc(`${devID ? devID : "Sanchit"}`)
         .onSnapshot((snapshot) => {
           setTodos(snapshot.data().Array);
         });
     }, 3500);
-
+    //timer is set to avoid calling the field before being created
     return () => clearTimeout(timer);
-  }, [del]);
+  }, [devID]);
 
   useEffect(() => {
+    //for getting todos from logged in google accounts
     db.collection("rooms")
-      .doc(`${del ? del : "hola"}`)
+      .doc(`${devID ? devID : "hola"}`)
       .get()
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
           db.collection("rooms")
-            .doc(`${user ? user.user.email : del}`)
+            .doc(`${user ? user.user.email : devID}`)
             .onSnapshot((snapshot) => {
               setTodos(snapshot.data().Array);
             });
@@ -108,7 +131,7 @@ function Main() {
       <ScrollView style={styles.body}>
         <Login />
         {todos.map((todo) => (
-          <Todo key={todo} todo={todo} id={`${del ? del : "Sanchit"}`} />
+          <Todo key={todo} todo={todo} id={`${devID ? devID : "Sanchit"}`} />
         ))}
       </ScrollView>
       <View>
@@ -122,7 +145,7 @@ function Main() {
           onSubmitEditing={() => {
             db.collection("rooms")
 
-              .doc(`${user ? user.user.email : del}`)
+              .doc(`${user ? user.user.email : devID}`)
               .update({
                 Array: firebase.firestore.FieldValue.arrayUnion(input),
               });
