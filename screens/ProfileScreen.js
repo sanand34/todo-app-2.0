@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet, Button } from "react-native";
+import { Text, View, Button } from "react-native";
 import { useStateValue } from "../StateProvider";
 import { actionTypes } from "../reducer";
 import { Avatar, Headline } from "react-native-paper";

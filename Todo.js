@@ -4,7 +4,7 @@ import { Checkbox, Button } from "react-native-paper";
 import firebase from "firebase";
 import { useStateValue } from "./StateProvider";
 import { db } from "./firebase";
-const Todo = ({ todo,id }) => {
+const Todo = ({ todo, id }) => {
   const [{ user }] = useStateValue();
   const [checked, setChecked] = useState(false);
 
@@ -69,4 +69,3 @@ const styles = StyleSheet.create({
     width: 240,
   },
 });
-
