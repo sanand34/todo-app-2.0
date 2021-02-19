@@ -26,7 +26,7 @@ function Main() {
         const storeData = async (value) => {
           try {
             //get data from storage about the device which is the firebase ID
-            let val = await AsyncStorage.getItem("@^storage");
+            const data = await AsyncStorage.getItem("@^storage");
 
             /*If there is no data in storage about the device 
             then
@@ -37,7 +37,7 @@ function Main() {
             else
 
             get ID and store it in devID variable */
-            if (val == null) {
+            if (data == null) {
               await AsyncStorage.setItem("@^storage", value);
               db.collection("rooms")
 
@@ -50,7 +50,7 @@ function Main() {
             } else {
               dispatch({
                 type: actionTypes.SET_devID,
-                devID: val,
+                devID: data,
               });
             }
           } catch (e) {
@@ -91,9 +91,6 @@ function Main() {
   }, []);
 
   useEffect(() => {
-    //set an inital field named Sanchit
-    db.collection("rooms").doc("Sanchit").set({ Array: [] });
-
     //once the devID variable gets the ID get the data from the ID
     const timer = setTimeout(() => {
       db.collection("rooms")
@@ -109,7 +106,7 @@ function Main() {
   useEffect(() => {
     //for getting todos from logged in google accounts
     db.collection("rooms")
-      .doc(`${devID ? devID : "hola"}`)
+      .doc(`${devID ? devID : "null"}`)
       .get()
       .then((docSnapshot) => {
         if (docSnapshot.exists) {
